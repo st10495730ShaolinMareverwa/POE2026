@@ -204,3 +204,74 @@ public class Message {
          */
         String firstWord =
                 words[0].replaceAll("[^a-zA-Z0-9]", "");
+        
+/*
+         * Remove punctuation from last word.
+         */
+        String lastWord =
+                words[words.length - 1]
+                        .replaceAll("[^a-zA-Z0-9]", "");
+
+        /*
+         * Build and return final hash.
+         */
+        return messageID.substring(0, 2)
+                + ":"
+                + messageNumber
+                + ":"
+                + firstWord.toUpperCase()
+                + lastWord.toUpperCase();
+    }
+
+    /*
+     * Send/store/disregard message
+     *
+     * Options:
+     * 1 -> Send message
+     * 2 -> Disregard message
+     * 3 -> Store message
+     */
+    public String SentMessage(int option) {
+
+        // Switch statement handles menu selection
+        switch (option) {
+
+            /*
+             * Send message
+             */
+            case 1:
+                
+// Increase total messages sent
+                totalMessages++;
+
+                // Store current message in ArrayList
+                sentMessages.add(this);
+
+                return "Message successfully sent.";
+
+            /*
+             * Disregard message
+             */
+            case 2:
+
+                return "Press 0 to delete the message.";
+
+            /*
+             * Store message in JSON file
+             */
+            case 3:
+
+                // Call JSON storage method
+                storeMessage();
+
+                return "Message successfully stored.";
+
+            /*
+             * Invalid option
+             */
+            default:
+
+                return "Invalid option.";
+        }
+    }
+    
