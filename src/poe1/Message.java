@@ -1,4 +1,4 @@
- package poepart1;
+ package poe1;
 
 /*
  * JSON Simple imports
