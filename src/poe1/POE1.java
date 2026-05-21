@@ -556,4 +556,10 @@ public class POE1
     }
 }
         
-        
+  /*
+Oracle (2024) Class Pattern, Java SE 21 Documentation. Available at:
+https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html (Accessed: 20 May 2026).
+
+Google Code (2012) JSON Simple, Google Code Archive. Available at:
+https://code.google.com/archive/p/json-simple/ (Accessed: 20 May 2026).
+*/      
