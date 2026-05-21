@@ -141,3 +141,66 @@ public class Message {
                     + "Please correct the number and try again.";
         }
     }
+    
+ /*
+     * Validate message length
+     *
+     * Assignment rule:
+     * Message may not exceed 250 characters.
+     */
+    public String checkMessageLength() {
+
+        // Check if message length is valid
+        if (message.length() <= 250) {
+
+            return "Message ready to send.";
+
+        } else {
+
+            /*
+             * Calculate how many characters
+             * exceed the limit.
+             */
+            int excess = message.length() - 250;
+
+            return "Message exceeds 250 characters by "
+                    + excess
+                    + "; please reduce the size.";
+        }
+    }
+    
+/*
+     * Create message hash
+     *
+     * Format:
+     * First 2 digits of message ID
+     * :
+     * Message number
+     * :
+     * First word + last word in uppercase
+     *
+     * Example:
+     * 00:1:HITONIGHT
+     */
+    public String createMessageHash() {
+
+        /*
+         * Prevent errors if message is empty
+         * or contains only spaces.
+         */
+        if (message == null || message.trim().isEmpty()) {
+            return "";
+        }
+
+        /*
+         * Split message into words.
+         *
+         * \\s+ means one or more spaces.
+         */
+        String[] words = message.trim().split("\\s+");
+
+        /*
+         * Remove punctuation from first word.
+         */
+        String firstWord =
+                words[0].replaceAll("[^a-zA-Z0-9]", "");
