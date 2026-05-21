@@ -1,10 +1,11 @@
-package poepart1;
+ package poepart1;
 
 /*
  * JSON Simple imports
- * These allow the program to create JSON objects and arrays
- * so messages can be stored in a JSON file.
+ * These allow the program to create JSON objects and arrays so messages can be 
+ * stored in a JSON file.
  */
+ 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -12,6 +13,7 @@ import org.json.simple.JSONObject;
  * FileWriter allows writing to files.
  * IOException handles file-writing errors.
  */
+ 
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -19,10 +21,12 @@ import java.io.IOException;
  * ArrayList stores multiple sent messages.
  * Random generates random message IDs.
  */
+ 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Message {
+public class Message 
+{
 
     /*
      * Static variables
@@ -33,14 +37,16 @@ public class Message {
      * sentMessages:
      * Stores all sent Message objects while the program runs.
      */
+    
     private static int totalMessages = 0;
     private static ArrayList<Message> sentMessages = new ArrayList<>();
-    
-/*
+
+    /*
      * Instance variables
      *
      * These store information for each individual message object.
      */
+    
     private String messageID;
     private int messageNumber;
     private String recipient;
@@ -57,7 +63,9 @@ public class Message {
      * - generates a random message ID
      * - creates a message hash
      */
-    public Message(int messageNumber, String recipient, String message) {
+    
+    public Message(int messageNumber, String recipient, String message) 
+    {
 
         this.messageNumber = messageNumber;
         this.recipient = recipient;
@@ -70,28 +78,31 @@ public class Message {
          * Ensure the message is not null or empty
          * before creating the message hash.
          */
-        if (message != null && !message.trim().isEmpty()) {
+        
+        if (message != null && !message.trim().isEmpty()) 
+        {
             this.messageHash = createMessageHash();
         }
     }
 
-/*
+    /*
      * Generate random 10-digit message ID
      *
-     * Example:
-     * 5483921746
+     * Example: 5483921746
      */
-    private void generateMessageID() {
+    
+    private void generateMessageID() 
+    {
 
         // Create Random object
         Random random = new Random();
 
         /*
-         * Generate random number between:
-         * 1000000000 and 9999999999
+         * Generate random number between 1000000000 and 9999999999
          *
          * This guarantees exactly 10 digits.
          */
+        
         long number = 1000000000L
                 + (long) (random.nextDouble() * 9000000000L);
 
@@ -106,61 +117,69 @@ public class Message {
      * - true if valid
      * - false if invalid
      */
-    public boolean checkMessageID() {
-
+    
+    public boolean checkMessageID() 
+    {
         return messageID.length() == 10;
     }
-    
-/*
+
+    /*
      * Validate recipient cellphone number
      *
      * Regex explanation:
-     * ^         -> start of string
-     * \\+27     -> must begin with +27
-     * \\d{9}    -> followed by exactly 9 digits
-     * $         -> end of string
+     * ^         - start of string
+     * \\+27     - must begin with +27
+     * \\d{9}    - followed by exactly 9 digits
+     * $         - end of string
      *
-     * Example valid number:
-     * +27718693002
+     * Example valid number: +27718693002
      *
      * Regex reference:
      * Oracle Java Pattern documentation:
      * https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html
      */
-    public String checkRecipientCell() {
+    
+    public String checkRecipientCell() 
+    {
 
         // Check if recipient number matches SA format
-        if (recipient.matches("^\\+27\\d{9}$")) {
+        if (recipient.matches("^\\+27\\d{9}$")) 
+        {
 
             return "Cell phone number successfully captured.";
 
-        } else {
+        } 
+        else 
+        {
 
             return "Cell phone number is incorrectly formatted or "
                     + "does not contain an international code. "
                     + "Please correct the number and try again.";
         }
     }
-    
- /*
+
+    /*
      * Validate message length
      *
      * Assignment rule:
      * Message may not exceed 250 characters.
      */
-    public String checkMessageLength() {
+    
+    public String checkMessageLength() 
+    {
 
         // Check if message length is valid
-        if (message.length() <= 250) {
-
+        if (message.length() <= 250) 
+        {
             return "Message ready to send.";
-
-        } else {
-
+        } 
+        else 
+        {
             /*
              * Calculate how many characters
              * exceed the limit.
              */
+            
             int excess = message.length() - 250;
 
             return "Message exceeds 250 characters by "
@@ -168,27 +187,28 @@ public class Message {
                     + "; please reduce the size.";
         }
     }
-    
-/*
+
+    /*
      * Create message hash
      *
      * Format:
-     * First 2 digits of message ID
-     * :
-     * Message number
-     * :
-     * First word + last word in uppercase
+     * - First 2 digits of message ID
+     * - Message number
+     * - First word + last word in uppercase
      *
-     * Example:
-     * 00:1:HITONIGHT
+     * Example: 00:1:HITONIGHT
      */
-    public String createMessageHash() {
+    
+    public String createMessageHash() 
+    {
 
         /*
          * Prevent errors if message is empty
          * or contains only spaces.
          */
-        if (message == null || message.trim().isEmpty()) {
+        
+        if (message == null || message.trim().isEmpty()) 
+        {
             return "";
         }
 
@@ -197,24 +217,27 @@ public class Message {
          *
          * \\s+ means one or more spaces.
          */
+        
         String[] words = message.trim().split("\\s+");
 
         /*
          * Remove punctuation from first word.
          */
+        
         String firstWord =
                 words[0].replaceAll("[^a-zA-Z0-9]", "");
-        
-/*
+
+        /*
          * Remove punctuation from last word.
          */
-        String lastWord =
-                words[words.length - 1]
+        
+        String lastWord = words[words.length - 1]
                         .replaceAll("[^a-zA-Z0-9]", "");
 
         /*
          * Build and return final hash.
          */
+        
         return messageID.substring(0, 2)
                 + ":"
                 + messageNumber
@@ -227,21 +250,26 @@ public class Message {
      * Send/store/disregard message
      *
      * Options:
-     * 1 -> Send message
-     * 2 -> Disregard message
-     * 3 -> Store message
+     * 1 - Send message
+     * 2 - Disregard message
+     * 3 - Store message
      */
-    public String SentMessage(int option) {
+    
+    public String SentMessage(int option) 
+    {
 
         // Switch statement handles menu selection
-        switch (option) {
+        
+        switch (option) 
+        {
 
             /*
              * Send message
              */
+            
             case 1:
-                
-// Increase total messages sent
+
+                // Increase total messages sent
                 totalMessages++;
 
                 // Store current message in ArrayList
@@ -252,26 +280,207 @@ public class Message {
             /*
              * Disregard message
              */
-            case 2:
-
-                return "Press 0 to delete the message.";
+                
+            case 2: return "Press 0 to delete the message.";
 
             /*
              * Store message in JSON file
              */
-            case 3:
-
-                // Call JSON storage method
+                
+            case 3:// Call JSON storage method
                 storeMessage();
-
                 return "Message successfully stored.";
 
             /*
              * Invalid option
              */
-            default:
-
-                return "Invalid option.";
+                
+            default: return "Invalid option.";
         }
     }
+
+    /*
+     * Print all sent messages
+     *
+     * Loops through the ArrayList and displays:
+     * - message ID
+     * - message hash
+     * - recipient
+     * - message text
+     */
     
+    public String printMessages() 
+    {
+
+        // Check if no messages have been sent
+        if (sentMessages.isEmpty()) 
+        {
+            return "No messages have been sent.";
+        }
+
+        /*
+         * StringBuilder is more efficient than repeatedly joining Strings.
+         */
+        
+        StringBuilder sb = new StringBuilder();
+
+        /*
+         * Loop through every Message object stored inside the ArrayList.
+         */
+        
+        for (Message m : sentMessages) 
+        {
+            sb.append("Message ID: ")
+                    .append(m.messageID)
+                    .append("\n");
+
+            sb.append("Message Hash: ")
+                    .append(m.messageHash)
+                    .append("\n");
+
+            sb.append("Recipient: ")
+                    .append(m.recipient)
+                    .append("\n");
+
+            sb.append("Message: ")
+                    .append(m.message)
+                    .append("\n");
+
+            sb.append("---------------------\n");
+        }
+
+        // Return final formatted String
+        return sb.toString();
+    }
+
+    /*
+     * Return total number of messages sent
+     */
+    
+    public static int returnTotalMessages() 
+    {
+
+        return totalMessages;
+    }
+
+    /*
+     * Store message in JSON file
+     *
+     * Research reference:
+     * JSON Simple library:
+     * https://code.google.com/archive/p/json-simple/
+     */
+    
+    @SuppressWarnings("unchecked")
+    public void storeMessage() 
+    {
+        /*
+         * Create JSON object
+         */
+        
+        JSONObject obj = new JSONObject();
+
+        /*
+         * Store values inside JSON object
+         */
+        
+        obj.put("messageID", this.messageID);
+        obj.put("messageNumber", this.messageNumber);
+        obj.put("recipient", this.recipient);
+        obj.put("message", this.message);
+        obj.put("messageHash", this.messageHash);
+
+        /*
+         * Create JSON array and add object
+         */
+        
+        JSONArray arr = new JSONArray();
+
+        arr.add(obj);
+
+        /*
+         * Write JSON data into messages.json file
+         */
+        
+        try (FileWriter file = new FileWriter("messages.json", true)) 
+        {
+
+            file.write(arr.toJSONString());
+
+            // Move to next line
+            
+            file.write(System.lineSeparator());
+
+        } 
+        catch (IOException e) 
+        {
+
+            /*
+             * Display file-writing error
+             */
+            
+            System.out.println( "Error storing message: "
+                            + e.getMessage()
+            );
+        }
+    }
+
+    /*
+     * Reset session
+     *
+     * Used mainly for unit testing. Clears all static values before tests run.
+     */
+    
+    public static void resetSession() 
+    {
+        totalMessages = 0;
+        sentMessages.clear();
+    }
+
+    /*
+     * Getter methods
+     *
+     * Allow other classes to safely access private variables.
+     */
+
+    public String getMessageID() 
+    {
+        return messageID;
+    }
+
+    public int getMessageNumber() 
+    {
+        return messageNumber;
+    }
+
+    public String getRecipient() 
+    {
+        return recipient;
+    }
+
+    public String getMessage() 
+    {
+        return message;
+    }
+
+    public String getMessageHash() 
+    {
+        return messageHash;
+    }
+
+    /*
+     * Setter method used mainly in unit tests.
+     *
+     * Allows predictable message hashes during testing.
+     */
+    
+    public void setMessageID(String messageID) 
+    {
+
+        this.messageID = messageID;
+
+        // Rebuild hash after changing ID
+        
+        this.messageHash = createMessageHash();
+    }
+}     
