@@ -74,3 +74,70 @@ public class Message {
             this.messageHash = createMessageHash();
         }
     }
+
+/*
+     * Generate random 10-digit message ID
+     *
+     * Example:
+     * 5483921746
+     */
+    private void generateMessageID() {
+
+        // Create Random object
+        Random random = new Random();
+
+        /*
+         * Generate random number between:
+         * 1000000000 and 9999999999
+         *
+         * This guarantees exactly 10 digits.
+         */
+        long number = 1000000000L
+                + (long) (random.nextDouble() * 9000000000L);
+
+        // Convert number into String
+        this.messageID = String.valueOf(number);
+    }
+
+    /*
+     * Check whether the message ID is exactly 10 digits.
+     *
+     * Returns:
+     * - true if valid
+     * - false if invalid
+     */
+    public boolean checkMessageID() {
+
+        return messageID.length() == 10;
+    }
+    
+/*
+     * Validate recipient cellphone number
+     *
+     * Regex explanation:
+     * ^         -> start of string
+     * \\+27     -> must begin with +27
+     * \\d{9}    -> followed by exactly 9 digits
+     * $         -> end of string
+     *
+     * Example valid number:
+     * +27718693002
+     *
+     * Regex reference:
+     * Oracle Java Pattern documentation:
+     * https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html
+     */
+    public String checkRecipientCell() {
+
+        // Check if recipient number matches SA format
+        if (recipient.matches("^\\+27\\d{9}$")) {
+
+            return "Cell phone number successfully captured.";
+
+        } else {
+
+            return "Cell phone number is incorrectly formatted or "
+                    + "does not contain an international code. "
+                    + "Please correct the number and try again.";
+        }
+    }
